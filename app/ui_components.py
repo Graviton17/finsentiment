@@ -14,9 +14,31 @@ def render_sidebar():
 
         if input_mode == "📈 Stock ticker":
             TICKERS = {
-                "AAPL  — Apple": "AAPL", "MSFT  — Microsoft": "MSFT", 
-                "GOOGL — Alphabet": "GOOGL", "AMZN  — Amazon": "AMZN",
-                "CUSTOM — Enter manually": "CUSTOM",
+                "AAPL  — Apple":             "AAPL",
+                "MSFT  — Microsoft":         "MSFT",
+                "GOOGL — Alphabet (Google)": "GOOGL",
+                "AMZN  — Amazon":            "AMZN",
+                "NVDA  — NVIDIA":            "NVDA",
+                "META  — Meta (Facebook)":   "META",
+                "TSLA  — Tesla":             "TSLA",
+                "INTC  — Intel":             "INTC",
+                "AMD   — AMD":               "AMD",
+                "NFLX  — Netflix":           "NFLX",
+                "JPM   — JPMorgan Chase":    "JPM",
+                "BAC   — Bank of America":   "BAC",
+                "GS    — Goldman Sachs":     "GS",
+                "V     — Visa":              "V",
+                "MA    — Mastercard":        "MA",
+                "JNJ   — Johnson & Johnson": "JNJ",
+                "PFE   — Pfizer":            "PFE",
+                "UNH   — UnitedHealth":      "UNH",
+                "XOM   — ExxonMobil":        "XOM",
+                "CVX   — Chevron":           "CVX",
+                "WMT   — Walmart":           "WMT",
+                "KO    — Coca-Cola":         "KO",
+                "MCD   — McDonald's":        "MCD",
+                "NKE   — Nike":              "NKE",
+                "CUSTOM — Enter manually":   "CUSTOM",
             }
             selected_label = st.selectbox("Stock ticker", options=list(TICKERS.keys()))
             selected_value = TICKERS[selected_label]
