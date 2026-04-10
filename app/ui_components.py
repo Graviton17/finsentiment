@@ -30,7 +30,8 @@ def render_sidebar():
             uploaded_pdf = st.file_uploader("Upload a financial PDF", type=["pdf"])
 
         st.divider()
-        analyze_btn = st.button("🔍 Analyze", width="stretch", type="primary")
+        # Reverted to use_container_width=True to fix the TypeError
+        analyze_btn = st.button("🔍 Analyze", use_container_width=True, type="primary")
         
         return input_mode, ticker, days_back, data_source, uploaded_pdf, analyze_btn
 
@@ -58,9 +59,10 @@ def render_charts(summary):
             "Count": [summary.get("positive_count", 0), summary.get("negative_count", 0), summary.get("neutral_count", 0)],
         })
         fig_pie = px.pie(pie_df, names="Sentiment", values="Count", color="Sentiment",
-                        color_discrete_map={"Positive":"#22c55e","Negative":"#ef4444","Neutral":"#94a3b8"}, hole=0.45)
+                         color_discrete_map={"Positive":"#22c55e","Negative":"#ef4444","Neutral":"#94a3b8"}, hole=0.45)
         fig_pie.update_layout(showlegend=True, margin=dict(t=10,b=10,l=10,r=10))
-        st.plotly_chart(fig_pie, width="stretch")
+        # Reverted to use_container_width=True
+        st.plotly_chart(fig_pie, use_container_width=True)
 
     with chart_col2:
         st.subheader("Average label confidence")
@@ -70,9 +72,10 @@ def render_charts(summary):
         })
         bar_df["label_text"] = bar_df["Avg score"].map(lambda v: f"{v:.3f}")
         fig_bar = px.bar(bar_df, x="Label", y="Avg score", color="Label",
-                        color_discrete_map={"Positive":"#22c55e","Negative":"#ef4444","Neutral":"#94a3b8"}, text="label_text")
+                         color_discrete_map={"Positive":"#22c55e","Negative":"#ef4444","Neutral":"#94a3b8"}, text="label_text")
         fig_bar.update_layout(showlegend=False, yaxis_range=[0,1], margin=dict(t=10,b=10,l=10,r=10))
-        st.plotly_chart(fig_bar, width="stretch")
+        # Reverted to use_container_width=True
+        st.plotly_chart(fig_bar, use_container_width=True)
 
 def render_timeline(results):
     st.subheader("Sentiment timeline")
@@ -89,17 +92,18 @@ def render_timeline(results):
     fig_tl = go.Figure()
     fig_tl.add_bar(x=daily["date"], y=daily["article_count"], name="Count", marker_color="#cbd5e1", yaxis="y2", opacity=0.5)
     fig_tl.add_scatter(x=daily["date"], y=daily["avg_score"], mode="lines+markers", name="Avg sentiment",
-                    line=dict(color="#6366f1", width=2), marker=dict(size=7))
+                       line=dict(color="#6366f1", width=2), marker=dict(size=7))
     fig_tl.update_layout(yaxis=dict(title="Sentiment score", range=[-1.1,1.1], zeroline=True),
-                        yaxis2=dict(title="Count", overlaying="y", side="right"),
-                        legend=dict(orientation="h", y=1.1), margin=dict(t=20,b=20,l=40,r=40), hovermode="x unified")
-    st.plotly_chart(fig_tl, width="stretch")
+                         yaxis2=dict(title="Count", overlaying="y", side="right"),
+                         legend=dict(orientation="h", y=1.1), margin=dict(t=20,b=20,l=40,r=40), hovermode="x unified")
+    # Reverted to use_container_width=True
+    st.plotly_chart(fig_tl, use_container_width=True)
 
 def render_results_table(results, label):
     st.subheader("Detailed results")
     display_df = pd.DataFrame(results)[
         ["datetime","source","sentiment","confidence",
-        "positive_score","negative_score","neutral_score","headline","url"]
+         "positive_score","negative_score","neutral_score","headline","url"]
     ].sort_values("datetime", ascending=False)
 
     def highlight_sentiment(val):
@@ -109,7 +113,8 @@ def render_results_table(results, label):
 
     st.dataframe(
         display_df.style.map(highlight_sentiment, subset=["sentiment"]),
-        width="stretch",
+        # Reverted to use_container_width=True
+        use_container_width=True,
         column_config={
             "url": st.column_config.LinkColumn("Link"),
             "confidence": st.column_config.ProgressColumn("Confidence", min_value=0, max_value=1, format="%.3f"),
